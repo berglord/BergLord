@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="BotProject.exe" version="1.0.0.4" publicKeyToken="1d1d3e37873d59b2" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="BotProject" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="BotProject.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the 
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward 
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BotProject.exe" size="10208">
+      <assemblyIdentity name="BotProject" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>4Agm8YZyQ8rRfuMtfVWvLy2dSIuVFqulNAssSsNgELA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="BotProject.exe.config" size="189">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>rl5/qDc7Jz+tB+BIbOv9iMGPlRe6YJwrjmU09dnlPcs=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=DESKTOP-FTVO0AT\Scott" issuerKeyHash="9ee24d501e123ab1d6d497d2afdd39f093ee7534" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>99rGjw14mbbNO08mAMzcxanfCqZSmqIWIfUaQQ4USNM=</DigestValue></Reference></SignedInfo><SignatureValue>QErdXNAVPZ0h5Zrz1uk648tKzJjtsIbtkXGgYntV0Vbh2oqUZ4jooD3CuyW+ejHn2aqsXMwa9VuXs+6wvnLh7e+pwSE6WiNz/dcOD0jsA8NuqdpQlz8KGWtDkot9n+Tg8DX9LZUemYQ9tOobnLLmKlz5r74CjqXf+H9xKHN1VME=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>z0gf3T29S01Q0Wp06yLyfc/jLEFOk1pUFYyXhM2RVJpE73zhZZIFiQ9VCy5tfAgevsb9vpn/f9EDOyM14rz2NXttcLHJ11DLHEMB5L6hmyKBya8oNRuO1K9fclSWa6amICD2tj9F8CM30i5xMYb4xg9DfY/e/gEue0BfhiBSKZE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="d348140e411af52116a29a52a60adfa9c5dccc00264f3bcdb699780d8fc6daf7" Description="" Url=""><as:assemblyIdentity name="BotProject.exe" version="1.0.0.4" publicKeyToken="1d1d3e37873d59b2" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=DESKTOP-FTVO0AT\Scott</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>LB60zj8dig3WCA5PWRtohNfoKOYZ4QCN+PykOdpP2F0=</DigestValue></Reference></SignedInfo><SignatureValue>C8PJLZLRGGYVLnSpHiX/S+eD2h3JXrJ8DcGXJgDfnQwyNboDwjhNlgCgMoBBqPb+Q6HVlF6fW96T/OiRNJ1D7Q5yK5FjkBz89icXJ4y9g5flu5JCMVi++Pq0/Tt7S8Gb+Wooy7jGyFw9YQihFx474oJXrZUZb7XXzWRees1sWpU=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>z0gf3T29S01Q0Wp06yLyfc/jLEFOk1pUFYyXhM2RVJpE73zhZZIFiQ9VCy5tfAgevsb9vpn/f9EDOyM14rz2NXttcLHJ11DLHEMB5L6hmyKBya8oNRuO1K9fclSWa6amICD2tj9F8CM30i5xMYb4xg9DfY/e/gEue0BfhiBSKZE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB7TCCAVagAwIBAgIQXcegWtjp2YNIsDNmxwgRfjANBgkqhkiG9w0BAQsFADA1MTMwMQYDVQQDHioARABFAFMASwBUAE8AUAAtAEYAVABWAE8AMABBAFQAXABTAGMAbwB0AHQwHhcNMjAwMTAyMDYxMDI0WhcNMjEwMTAxMTIxMDI0WjA1MTMwMQYDVQQDHioARABFAFMASwBUAE8AUAAtAEYAVABWAE8AMABBAFQAXABTAGMAbwB0AHQwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAM9IH909vUtNUNFqdOsi8n3P4yxBTpNaVBWMl4TNkVSaRO984WWSBYkPVQsubXwIHr7G/b6Z/3/RAzsjNeK89jV7bXCxyddQyxxDAeS+oZsigcmvKDUbjtSvX3JUlmumpiAg9rY/RfAjN9IucTGG+MYPQ32P3v4BLntAX4YgUimRAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAg2lum0r3YS65Nnk21AB5gDQPqWiuvwO8KT8sRPlC3NlTQMJd5HOZF1YfmbZVTo8yacDTrrYtzwjdajULvT22sxG0oI5eSjC/zYBaK5bONYfPvU279FhojmFmhdjGtoqSuOhzJjbyBM5jK5aOo0xhOUmlhiRkIJhE3HgGzjJvA8o=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
