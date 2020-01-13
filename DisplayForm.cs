@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,12 +19,14 @@ namespace BotProject
         public bool IsRunning;
         public Bitmap OriginalBitMap;
         public Bitmap DebugBitMap;
-        public TemplateMatch[] NamePlates = new TemplateMatch[0]; 
-
+        public TemplateMatch[] NamePlates = new TemplateMatch[0];
+        public List<Point> NamePlatePoints = new List<Point>();
         private Bitmap _neutralHp;
 
         private ImageProcessing _imageProcessor;
         private WoWProcess _wowProcess;
+        private Character _character;
+        private Navigation _navigation;
 
 
         public DisplayForm()
@@ -53,6 +58,8 @@ namespace BotProject
             // Start Capture
 
             _imageProcessor = new ImageProcessing();
+            _character = new Character();
+            _navigation = new Navigation();
             //Program.CaptureThread = new Thread(_imageProcessor.OnUpdate);
            // Program.CaptureThread.Start();
             UpdateLoop();
@@ -72,7 +79,6 @@ namespace BotProject
             //    TemplateMatch[] matchings = tm.ProcessImage(graySource, grayTemplate);
 
             //    Graphics g = Graphics.FromImage(sourceImage);
-            //    Console.WriteLine(matchings.Length);
             //    var rect = new Rect(685, 275, 110, 65);
             //    for (int i = 0; i < matchings.Length; i++)
             //    {
@@ -92,7 +98,6 @@ namespace BotProject
 
             //    TesseractEngine engine = new Tesseract.TesseractEngine("./TessData", "eng", Tesseract.EngineMode.TesseractOnly);
             //    Page page =engine.Process(_originalBitMap,rect, Tesseract.PageSegMode.Auto);
-            //    Console.WriteLine(page.GetText());
 
             //    wait(200);
             //}
@@ -116,14 +121,12 @@ namespace BotProject
                 {
                     _imageProcessor.CaptureImage();
                     Graphics g = Graphics.FromImage(DebugBitMap);
-                    //Console.WriteLine(NamePlates.Length);
                     var count = 0;
                     if(NamePlates != null) {
                         foreach (var match in NamePlates)
                         {
                             if (match.Similarity > 0.87)
                             {
-                                Console.WriteLine("Count - " + count);
                                 count++;
                                 // if (match.Rectangle.Size.Width < 25) continue;
                                 int X = match.Rectangle.X;
@@ -133,11 +136,21 @@ namespace BotProject
                             }
                         }
                     }
+                    foreach(var point in NamePlatePoints)
+                    {
+                        g.DrawRectangle(new Pen(Color.Red, 3), point.X, point.Y, 60, 10);
+                    }
+                    var middle = new Vector2((WoWProcess.Instance.Width / 2), (WoWProcess.Instance.Height / 2) + 50);
+                    g.DrawLine(new Pen(Color.Cyan, 3), middle.X, middle.Y, middle.X + (Navigation.Instance.TargetClickVector.X * 75), middle.Y - (Navigation.Instance.TargetClickVector.Y * 75));
+                    // g.DrawRectangle(new Pen(Color.Red, 3), middle.X + (Navigation.Instance.TargetClickVector.X * 250), middle.Y - (Navigation.Instance.TargetClickVector.Y * 100), 20, 20 );
+                   // SolidBrush myBrush = new SolidBrush(Color.Cyan);
+                   // g.FillRectangle(myBrush, middle.X, middle.Y , 5, 5);
+
+                    var delta = Navigation.Instance.CaclulateDelta();
+                   
                     SetDebugImage(DebugBitMap);
+                    Console.WriteLine(Character.Instance.PlayerDirection + " Char Pos - : "+ Character.Instance.PlayerPosition);
                     await Task.Delay(50);
-                    //Thread.CurrentThread.Join(50);
-                   // wait(50);
-                   // Thread.Sleep(50);
                 }
                 catch (Exception e)
                 {

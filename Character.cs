@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,13 +18,11 @@ namespace BotProject
 
         // OCR read values to be set
         public OcrResult PlayerTextResult;
-        public float PlayerX;
-        public float PlayerY;
-        public float PlayerDirection;
+        public Vector2 PlayerPosition;
+        public double PlayerX;
+        public double PlayerY;
+        public double PlayerDirection;
 
-        public OcrResult TargetTextResult;
-        public float TargetX;
-        public float TargetY;
 
         public Character()
         {

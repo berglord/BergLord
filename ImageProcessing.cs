@@ -1,6 +1,10 @@
 ﻿using AForge.Imaging;
 using AForge.Imaging.Filters;
 using BotProject.Properties;
+using Emgu.CV;
+using Emgu.CV.Cuda;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 using IronOcr;
 using System;
 using System.Collections.Generic;
@@ -78,15 +82,18 @@ namespace BotProject
             {
                 Task.Factory.StartNew(() =>
                 {
-                    var namePlates = FindNamePlates(buffer, buffer2);
-                //invoke an action against the main thread to draw the buffer to the background image of the main form.
-                DisplayForm.Instance.Invoke(new Action(() =>
-                    {
-                        if (namePlates != null) DisplayForm.Instance.NamePlates = namePlates;
-                        _namePlateCheckCount++;
-                    }));
+                    //  var namePlates = FindNamePlates(buffer, buffer2);
+                    var namePlatePoint = FindAllImages(buffer, buffer2);
+                    //invoke an action against the main thread to draw the buffer to the background image of the main form.
+                    DisplayForm.Instance.Invoke(new Action(() =>
+                        {
+                            DisplayForm.Instance.NamePlatePoints = namePlatePoint;
+                            // if (namePlates != null) DisplayForm.Instance.NamePlates = namePlates;
+                            _namePlateCheckCount++;
+                        }));
                 });
             }
+
             DisplayForm.Instance.SetRawImage(CapturedBitmap);
             DisplayForm.Instance.SetDebugImage(DebugBitmap);
             Thread.Sleep(50);
@@ -95,6 +102,7 @@ namespace BotProject
         public void ProcessPlayerPosition()
         {
             if (_ocrEngine == null) _ocrEngine = new Tesseract.TesseractEngine("./TessData", "eng", Tesseract.EngineMode.Default);
+ 
             Page page = _ocrEngine.Process(_bmp, _ocrRect, Tesseract.PageSegMode.Auto);
             var trimmed = page.GetText().Trim();
             page.Dispose();
@@ -102,15 +110,18 @@ namespace BotProject
             string replaceWhiteSpace = "";
             string removedBreaks = trimmed.Replace("\r\n", replaceWith).Replace("\n", replaceWith).Replace("\r", replaceWith).Replace(" ", replaceWhiteSpace).Replace(",", " ");
             var result = removedBreaks.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(Convert.ToDouble).ToList();
-            //  Console.WriteLine(result[0]);
-            //  Console.WriteLine(result[1]);
-            // Console.WriteLine(result[2]);
+
+            Character.Instance.PlayerDirection = result[2];
+            Character.Instance.PlayerPosition = new System.Numerics.Vector2((float)result[0], (float)result[1]);
+
+          //  Console.WriteLine(Character.Instance.PlayerDirection);
+          //  Console.WriteLine(Character.Instance.PlayerPosition);
         }
 
         private int _namePlateCheckCount = 0;
         public TemplateMatch[] FindNamePlates(Bitmap image, Bitmap image2)
         {
-            
+
             // find all matchings with specified above similarity
             Bitmap sourceImage = new Bitmap(image);
             Bitmap graySource = _grayScale.Apply(sourceImage);
@@ -120,7 +131,6 @@ namespace BotProject
 
             return matchings;
             //Graphics g = Graphics.FromImage(DebugBitmap);
-            //Console.WriteLine(matchings.Length);
             //var rect = new Rect(685, 275, 110, 65);
             //for (int i = 0; i < matchings.Length / 10; i++)
             //{
@@ -138,6 +148,84 @@ namespace BotProject
             //    }
             //}
         }
+
+        public List<Point> FindAllImages(Bitmap imageBase, Bitmap imageToMatch)
+        {
+            Image<Bgr, byte> source = new Image<Bgr, byte>(imageBase);
+            Image<Bgr, byte> findImage = new Image<Bgr, byte>(imageToMatch);
+
+            var list = new List<Point>();
+
+            // It looks like you just need filenames here...
+            // Simple parallel foreach suggested by HouseCat (in 2.):
+
+            Image<Gray, float> result = source.MatchTemplate(findImage,
+               Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed);
+
+            // By using C# 7.0, we can do inline out declarations here:
+            //result.MinMax(
+            //        out double[] minValues,
+            //        out double[] maxValues,
+            //        out Point[] minLocations,
+            //        out Point[] maxLocations);
+
+            //if(maxValues[0] > 0.80f)
+            //{
+            //    list.Add(maxLocations[0]);
+            //    return list;
+            //}
+            for (int x = 0; x < result.Data.GetLength(1); x++)
+            {
+                for (int y = 0; y < result.Data.GetLength(0); y++)
+                {
+                    bool canAdd = true;
+
+                    double score = result.Data[y, x, 0];
+                    if (score > 0.70)
+                    {
+                        var point = new Point(x, y);
+                        foreach (var p in list)
+                        {
+                            if (GetDistance(p, point) < 100) canAdd = false;
+                        }
+                         if (canAdd) list.Add(point);
+                    }
+                }
+            }
+            return list;
+        }
+        private static double GetDistance(Point p1, Point p2)
+        {
+            return Math.Sqrt(Math.Pow((p2.X - p1.X), 2) + Math.Pow((p2.Y - p1.Y), 2));
+        }
+
+        public List<Rectangle> Test2(Bitmap imageBase, Bitmap imageToMatch)
+        {
+            var list = new List<Rectangle>();
+            Image<Bgr, byte> source = new Image<Bgr, byte>(imageBase);
+            Image<Bgr, byte> findImage = new Image<Bgr, byte>(imageToMatch);
+            using (Image<Bgr, byte> imgSrc = source)
+            {
+                //SubImage= template img, imgsrc = source image
+                using (Image<Gray, float> result = imgSrc.MatchTemplate(findImage, TemplateMatchingType.SqdiffNormed))
+                {
+
+                    double[] minValues, maxValues;
+                    Point[] minLocations, maxLocations;
+                    result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
+
+                    if (maxValues[0] > 0.80f)
+                    {
+                        Rectangle match = new Rectangle(maxLocations[0], imageToMatch.Size);
+                        //imgSrc.Draw(match, new Bgr(Color.Blue), -1);
+                        list.Add(match); // adding to rectangle list 
+                    }
+                }
+            }
+            Console.Write("List Count - " + list.Count);
+            return list;
+        }
+
 
         public Color GetColorAt(int x, int y)
         {
